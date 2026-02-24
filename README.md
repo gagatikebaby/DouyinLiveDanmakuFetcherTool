@@ -27,3 +27,5 @@
 ## 📷 项目示意图
 <img width="800" height="699" alt="image" src="https://github.com/user-attachments/assets/8eb0c38f-0c46-46cc-85e8-29905d11d077" />
 
+## 直播间ID获取方式
+<img width="1452" height="921" alt="image" src="https://github.com/user-attachments/assets/1d45e842-188f-416f-8c2a-fe1ebeab9fc4" />
