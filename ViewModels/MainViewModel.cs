@@ -34,6 +34,8 @@ namespace DouyinLiveReceiver.ViewModels
         private readonly HashSet<string> _processedMessageIds = new HashSet<string>();
         private readonly Dictionary<string, DateTime> _recentMessageHashes = new Dictionary<string, DateTime>();
         private MessageListItem? _selectedMessage;
+        private bool _pauseUpdate = false;
+        private int _cachedMessagesCount = 0;
 
         private ObservableCollection<MessageListItem> _allMessages { get; } = new ObservableCollection<MessageListItem>();
 
@@ -97,6 +99,7 @@ namespace DouyinLiveReceiver.ViewModels
         public RelayCommand ClearCommand { get; }
         public RelayCommand ClearLogsCommand { get; }
         public RelayCommand CopyMessageCommand { get; }
+        public RelayCommand TogglePauseCommand { get; }
 
         public MessageListItem? SelectedMessage
         {
@@ -163,6 +166,28 @@ namespace DouyinLiveReceiver.ViewModels
             CopyMessageCommand = new RelayCommand(
                 param => CopyMessage(param as MessageListItem)
             );
+            TogglePauseCommand = new RelayCommand(_ => TogglePause());
+        }
+
+        public bool PauseUpdate
+        {
+            get => _pauseUpdate;
+            private set
+            {
+                if (SetProperty(ref _pauseUpdate, value))
+                {
+                    if (_pauseUpdate)
+                    {
+                        _cachedMessagesCount = 0;
+                        StatusText = "UI更新：已暂停 (已缓存 0 条)";
+                    }
+                    else
+                    {
+                        StatusText = $"UI更新：已恢复 (显示 {_cachedMessagesCount} 条缓存消息)";
+                        RefreshMessagesDisplay();
+                    }
+                }
+            }
         }
 
         private void InitializeFilters()
@@ -337,6 +362,13 @@ namespace DouyinLiveReceiver.ViewModels
 
         private void UpdateMessagesDisplay(MessageListItem newItem)
         {
+            if (_pauseUpdate)
+            {
+                _cachedMessagesCount++;
+                StatusText = $"UI更新：已暂停 (已缓存 {_cachedMessagesCount} 条)";
+                return;
+            }
+
             var shouldAdd = _selectedFilterType == MessageType.All || newItem.Type == _selectedFilterType;
 
             if (shouldAdd)
@@ -417,6 +449,11 @@ namespace DouyinLiveReceiver.ViewModels
             {
                 MessageBox.Show(error, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
             });
+        }
+
+        private void TogglePause()
+        {
+            PauseUpdate = !PauseUpdate;
         }
 
         private void CopyMessage(MessageListItem? msg)
