@@ -249,13 +249,20 @@ namespace DouyinLiveReceiver.ViewModels
 
         private void OnMessageReceived(LiveMessage message)
         {
+            var messageLiveId = message.LiveId ?? "";
+
+            if (!string.IsNullOrEmpty(_liveId) && messageLiveId != _liveId)
+            {
+                System.Diagnostics.Debug.WriteLine($"[过滤] 跳过其他直播间消息: {messageLiveId}");
+                return;
+            }
+
             var dataString = message.Data?.ToString() ?? "";
             var dataHash = dataString.GetHashCode();
-            var liveId = message.LiveId ?? "";
-            var preciseTimestamp = Math.Floor(message.Timestamp * 1000) / 1000; 
-            var messageId = $"{message.Type}_{liveId}_{preciseTimestamp}_{dataHash}";
-            
-            var messageHash = $"{message.Type}_{liveId}_{dataString.GetHashCode()}";
+            var preciseTimestamp = Math.Floor(message.Timestamp * 1000) / 1000;
+            var messageId = $"{message.Type}_{_liveId}_{preciseTimestamp}_{dataHash}";
+
+            var messageHash = $"{message.Type}_{_liveId}_{dataString.GetHashCode()}";
 
             System.Diagnostics.Debug.WriteLine($"[消息] ID: {messageId}, 哈希: {messageHash}, 原始时间戳: {message.Timestamp}, 精确时间戳: {preciseTimestamp}");
 
