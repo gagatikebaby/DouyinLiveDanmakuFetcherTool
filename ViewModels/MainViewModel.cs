@@ -149,7 +149,7 @@ namespace DouyinLiveReceiver.ViewModels
 
             var appDir = AppDomain.CurrentDomain.BaseDirectory;
             _runnerService.Mode = RunMode.Exe;
-            _runnerService.ExePath = Path.Combine(appDir, "DouyinLiveFetcher.exe");
+            _runnerService.ExePath = Path.Combine(appDir, "Python_Cli.exe");
 
             InitializeFilters();
 

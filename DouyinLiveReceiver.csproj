@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-	  <None Include="DouyinLiveFetcher.exe">
+	  <None Include="Python_Cli.exe">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />

@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:DouyinLiveReceiver.ViewModels"
         xmlns:local="clr-namespace:DouyinLiveReceiver"
-        Title="消息接收器" 
+        Title="Live消息接收器" 
         Height="700" Width="800"
         MinHeight="500" MinWidth="600"
         WindowStartupLocation="CenterScreen"
@@ -61,7 +61,7 @@
 
         <!-- 标题区域 -->
         <StackPanel Grid.Row="0" Margin="0,0,0,15">
-            <TextBlock Text="📺 XXXXX" 
+            <TextBlock Text="📺 Live消息接收器" 
                        FontSize="22" FontWeight="Bold" 
                        Foreground="#333"/>
             <TextBlock Text="{Binding StatusText}" 
